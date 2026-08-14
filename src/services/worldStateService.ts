@@ -5391,6 +5391,8 @@ const getFilteredAlertHelmets = (buildVersion: number): string[] => {
         if (helmet.includes("Zephyr")) return buildVersion >= gameToBuildVersionInt["12.1.2"];
         if (helmet.includes("Oberon")) return buildVersion >= gameToBuildVersionInt["11.1.3"];
         if (helmet.includes("Valkyr")) return buildVersion >= gameToBuildVersionInt["11.1.3"];
+        if (helmet.includes("NekrosShroud")) return buildVersion >= gameToBuildVersionInt["10.8.0"];
+        if (helmet.includes("NekrosAraknid")) return buildVersion >= gameToBuildVersionInt["10.3.3"]; //should be 10.0.0
         if (helmet.includes("Vauban")) return buildVersion >= gameToBuildVersionInt["8.0.0"];
         return true;
     });
