@@ -5672,6 +5672,32 @@ const generateSeededAlert = (
     return alert;
 };
 
+const getAlertForIndex = (
+    idx: number,
+    validNodes: string[],
+    buildVersion: number,
+    regions: Record<string, IRegion>,
+    depth: number,
+    cache: Map<number, IAlert | undefined>
+): IAlert | undefined => {
+    if (cache.has(idx)) {
+        return cache.get(idx);
+    }
+    const usedNodes = new Set<string>();
+    if (depth > 0) {
+        for (let i = idx - 8; i < idx; i++) {
+            const earlierAlert = getAlertForIndex(i, validNodes, buildVersion, regions, depth - 1, cache);
+            if (earlierAlert) {
+                usedNodes.add(earlierAlert.MissionInfo.location);
+            }
+        }
+    }
+
+    const alert = generateSeededAlert(idx, validNodes, usedNodes, buildVersion, regions);
+    cache.set(idx, alert);
+    return alert;
+};
+
 export const populateAlerts = async (worldState: IWorldState): Promise<void> => {
     const buildLabel = worldState.BuildLabel;
     const buildVersion = buildVersionToInt(buildLabel);
@@ -5687,10 +5713,10 @@ export const populateAlerts = async (worldState: IWorldState): Promise<void> => 
         const timeMs = worldState.Time * 1000;
         const currentAlertIndex = Math.floor((timeMs - EPOCH) / ALERT_INTERVAL_MS);
         const activeAlerts: IAlert[] = [];
-        const usedNodes = new Set<string>();
+        const alertCache = new Map<number, IAlert | undefined>();
 
         for (let idx = currentAlertIndex - 8; idx <= currentAlertIndex + 1; idx++) {
-            const alert = generateSeededAlert(idx, validNodes, usedNodes, buildVersion, regions);
+            const alert = getAlertForIndex(idx, validNodes, buildVersion, regions, 8, alertCache);
             if (alert) {
                 const activationTime =
                     "$date" in alert.Activation
@@ -5700,8 +5726,6 @@ export const populateAlerts = async (worldState: IWorldState): Promise<void> => 
                     "$date" in alert.Expiry ? Number(alert.Expiry.$date.$numberLong) : alert.Expiry.sec * 1000;
 
                 if (timeMs >= activationTime && timeMs < expiryTime) {
-                    usedNodes.add(alert.MissionInfo.location);
-
                     const isPreU14 = buildVersion < gameToBuildVersionInt["14.0.0"];
                     if (alert.MissionInfo.missionReward) {
                         if (alert.MissionInfo.missionReward.items) {
