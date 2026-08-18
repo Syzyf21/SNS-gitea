@@ -5676,19 +5676,20 @@ const generateSeededAlert = (
 
 interface alertCacheKey {
     idx: number;
+    buildVersion: number;
 }
 
 const ALERT_CACHE_KEY_STORE_SIZE = 128;
 const alertCacheKeyStore: (alertCacheKey | undefined)[] = Array.from({ length: ALERT_CACHE_KEY_STORE_SIZE });
 const alertCache = new WeakMap<alertCacheKey, IAlert | undefined>();
 
-const getAlertCacheKey = (idx: number): alertCacheKey => {
+const getAlertCacheKey = (idx: number, buildVersion: number): alertCacheKey => {
     const slot = idx & (ALERT_CACHE_KEY_STORE_SIZE - 1);
     const cacheKey = alertCacheKeyStore[slot];
-    if (cacheKey && cacheKey.idx === idx) {
+    if (cacheKey && cacheKey.idx === idx && cacheKey.buildVersion === buildVersion) {
         return cacheKey;
     }
-    const key: alertCacheKey = { idx };
+    const key: alertCacheKey = { idx, buildVersion };
     alertCacheKeyStore[slot] = key;
     return key;
 };
@@ -5701,7 +5702,7 @@ const getAlertForIndex = (
     depth: number,
     cache: WeakMap<alertCacheKey, IAlert | undefined>
 ): IAlert | undefined => {
-    const key = getAlertCacheKey(idx);
+    const key = getAlertCacheKey(idx, buildVersion);
     if (cache.has(key)) {
         return cache.get(key);
     }
