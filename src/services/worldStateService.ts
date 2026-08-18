@@ -5679,7 +5679,7 @@ interface alertCacheKey {
 }
 
 const ALERT_CACHE_KEY_STORE_SIZE = 128;
-const alertCacheKeyStore: (alertCacheKey | undefined)[] = new Array(ALERT_CACHE_KEY_STORE_SIZE);
+const alertCacheKeyStore: (alertCacheKey | undefined)[] = Array.from({ length: ALERT_CACHE_KEY_STORE_SIZE });
 const alertCache = new WeakMap<alertCacheKey, IAlert | undefined>();
 
 const getAlertCacheKey = (idx: number): alertCacheKey => {
