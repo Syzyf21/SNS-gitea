@@ -5674,16 +5674,36 @@ const generateSeededAlert = (
     return alert;
 };
 
+interface alertCacheKey {
+    idx: number;
+}
+
+const ALERT_CACHE_KEY_STORE_SIZE = 128;
+const alertCacheKeyStore: (alertCacheKey | undefined)[] = new Array(ALERT_CACHE_KEY_STORE_SIZE);
+const alertCache = new WeakMap<alertCacheKey, IAlert | undefined>();
+
+const getAlertCacheKey = (idx: number): alertCacheKey => {
+    const slot = idx & (ALERT_CACHE_KEY_STORE_SIZE - 1);
+    const cacheKey = alertCacheKeyStore[slot];
+    if (cacheKey && cacheKey.idx === idx) {
+        return cacheKey;
+    }
+    const key: alertCacheKey = { idx };
+    alertCacheKeyStore[slot] = key;
+    return key;
+};
+
 const getAlertForIndex = (
     idx: number,
     validNodes: string[],
     buildVersion: number,
     regions: Record<string, IRegion>,
     depth: number,
-    cache: Map<number, IAlert | undefined>
+    cache: WeakMap<alertCacheKey, IAlert | undefined>
 ): IAlert | undefined => {
-    if (cache.has(idx)) {
-        return cache.get(idx);
+    const key = getAlertCacheKey(idx);
+    if (cache.has(key)) {
+        return cache.get(key);
     }
     const usedNodes = new Set<string>();
     if (depth > 0) {
@@ -5696,7 +5716,7 @@ const getAlertForIndex = (
     }
 
     const alert = generateSeededAlert(idx, validNodes, usedNodes, buildVersion, regions);
-    cache.set(idx, alert);
+    cache.set(key, alert);
     return alert;
 };
 
@@ -5715,7 +5735,6 @@ export const populateAlerts = async (worldState: IWorldState): Promise<void> => 
         const timeMs = worldState.Time * 1000;
         const currentAlertIndex = Math.floor((timeMs - EPOCH) / ALERT_INTERVAL_MS);
         const activeAlerts: IAlert[] = [];
-        const alertCache = new Map<number, IAlert | undefined>();
 
         for (let idx = currentAlertIndex - 8; idx <= currentAlertIndex + 1; idx++) {
             const alert = getAlertForIndex(idx, validNodes, buildVersion, regions, 8, alertCache);
