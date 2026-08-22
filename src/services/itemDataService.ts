@@ -3631,7 +3631,7 @@ export const getRecipe = (uniqueName: string, buildLabel: string): IRecipe | und
                     },
                     data.ingredients[1],
                     data.ingredients[2],
-                    data.ingredients[3],
+                    data.ingredients[3]
                 ]
             };
         }
