@@ -1,4 +1,3 @@
-
 dict = {
     general_inventoryUpdateNote: `Notka: Aby zobaczyć zmiany w grze, musisz zresynchronizować ekwipunek, np. poprzez wejście do dojo/przekaźnika lub przelogowanie.`,
     general_inventoryUpdateNoteGameWs: `Notka: Możliwe że musisz ponownie otworzyć menu które masz otwarte aby zobaczyć zmiany.`,
@@ -268,6 +267,9 @@ dict = {
     cheats_relicPlatinumBonusCommon: `Bonusowa platyna za brązową nagrode z reliktu`,
     cheats_relicPlatinumBonusUncommon: `Bonusowa platyna za srebrną nagrode z reliktu`,
     cheats_relicPlatinumBonusRare: `Bonusowa platyna za złotą nagrode z reliktu`,
+    cheats_teralystCapturePlatinumBonus: `Bonusowa platyna za pojmanie Teralyst'a`,
+    cheats_gantulystCapturePlatinumBonus: `Bonusowa platyna za pojmanie Gantulyst'a`,
+    cheats_hydrolystCapturePlatinumBonus: `Bonusowa platyna za pojmanie Hydrolyst'a`,
     cheats_nightwaveStandingMultiplier: `Multiplikator reputacji nocnej fali`,
     cheats_save: `Zapisz`,
     cheats_account: `Konto`,
