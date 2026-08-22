@@ -9,8 +9,8 @@ services:
             - ./.well-known:/app/.well-known
         ports:
             # The lefthand value determines the port you actually connect to. Within the container, SpaceNinjaServer will always use 80 and 443 (righthand values).
-            - 8898:80
-            - 8899:443
+            - 80:80
+            - 443:443
 
         # Normally, the image is fetched from Docker Hub, but you can use the local Dockerfile by removing "image" above and adding this:
         #build: .
@@ -21,7 +21,7 @@ services:
         depends_on:
             - mongodb
     mongodb:
-        image: docker.io/library/mongo:4.4
+        image: docker.io/library/mongo:8.0.0-noble
         volumes:
             - ./docker-data/database:/data/db
         command: mongod --quiet --logpath /dev/null
