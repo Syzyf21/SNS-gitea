@@ -1000,6 +1000,14 @@ export const addMissionInventoryUpdates = async (
                     inventory.Nemesis = undefined;
                 }
                 break;
+            case "Cards":
+                if (inventoryUpdates.Cards && inventoryUpdates.Cards.length > 0) {
+                    const auraModType = inventoryUpdates.Cards[0].ItemType
+                        .replace("/Lotus/Types/Game/MissionBuffs/", "/Lotus/Upgrades/Mods/Aura/")
+                        .replace("Buff", "AuraMod");
+                    addMods(inventory, [{ ItemType: auraModType, ItemCount: 1 }]);
+                }
+                break;
             default:
                 if (equipmentKeys.includes(key as TEquipmentKey)) {
                     applyClientEquipmentUpdates(
