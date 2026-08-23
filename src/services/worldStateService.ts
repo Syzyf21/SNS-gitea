@@ -5722,6 +5722,9 @@ export const populateAlerts = async (worldState: IWorldState): Promise<void> => 
                         if (item.endsWith("Blueprint")) {
                             return `/Lotus/Types/StoreItems/Recipes/${filename}StoreItem`;
                         }
+                        if (item.endsWith("Buff")) {
+                            return `/Lotus/Types/StoreItems/Cards/${filename}StoreItem`;
+                        }
                         return item;
                     });
                 }
