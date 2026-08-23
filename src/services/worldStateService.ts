@@ -5527,7 +5527,7 @@ export const generateSeededAlert = async (alertIndex: number, buildVersion: numb
         { name: "ENDO", weight: 40 },
         { name: "ALT_HELMETS", weight: 80 },
         { name: "WEAPONS", weight: 35 },
-        { name: "AURAS", weight: 18000 },
+        { name: "AURAS", weight: 18 },
         { name: "OROKIN_BP", weight: 4 }
     ];
     if (buildVersion >= gameToBuildVersionInt["7.11.0"]) categories.push({ name: "VAUBAN_PARTS", weight: 7 });
