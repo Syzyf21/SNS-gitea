@@ -96,7 +96,7 @@ dict = {
     code_feature_4: `Gravimag`,
     code_feature_8: `Gild`,
     code_feature_32: `Miejsce na arkany`,
-    code_feature_64: `2 miejsce na arkany`,
+    code_feature_64: `Drugie miejsce na arkany`,
     code_feature_512: `Geneza Inkarnon`,
     code_feature_1024: `Przeładowanie Walencyjne`,
     code_statAtten: `Multiplikator wartości`,
