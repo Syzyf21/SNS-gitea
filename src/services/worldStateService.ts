@@ -5527,7 +5527,7 @@ export const generateSeededAlert = async (alertIndex: number, buildVersion: numb
         { name: "ENDO", weight: 40 },
         { name: "ALT_HELMETS", weight: 80 },
         { name: "WEAPONS", weight: 35 },
-        { name: "AURAS", weight: 18 },
+        { name: "AURAS", weight: 18000 },
         { name: "OROKIN_BP", weight: 4 }
     ];
     if (buildVersion >= gameToBuildVersionInt["7.11.0"]) categories.push({ name: "VAUBAN_PARTS", weight: 7 });
@@ -5593,8 +5593,9 @@ export const generateSeededAlert = async (alertIndex: number, buildVersion: numb
             const isPreU9 = buildVersion < gameToBuildVersionInt["9.0.0"];
             const aura = rng.randomElement(alertAuras)!;
             if (isPreU9) {
-                const auraPath = aura.replace("/Lotus/Upgrades/Mods/Aura/", "/Lotus/Types/Cards/")
-                        .replace("AuraMod", "Buff");
+                const auraPath = aura
+                    .replace("/Lotus/Upgrades/Mods/Aura/", "/Lotus/Types/Cards/")
+                    .replace("AuraMod", "Buff");
                 rewardItems = [toStoreItem(auraPath)];
             } else {
                 rewardItems = [toStoreItem(aura)];
