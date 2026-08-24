@@ -1002,7 +1002,7 @@ export const addMissionInventoryUpdates = async (
                 break;
             case "Cards":
                 if (inventoryUpdates.Cards && inventoryUpdates.Cards.length > 0) {
-                    const auraMods = inventoryUpdates.Cards.map((value) => ({
+                    const auraMods = inventoryUpdates.Cards.map(value => ({
                         ItemType: value.ItemType.replace(
                             "/Lotus/Types/Game/MissionBuffs/",
                             "/Lotus/Upgrades/Mods/Aura/"
