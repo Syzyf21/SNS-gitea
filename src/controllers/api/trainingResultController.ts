@@ -6,10 +6,11 @@ import type { RequestHandler } from "express";
 import { unixTimesInMs } from "../../constants/timeConstants.ts";
 import type { IInventoryChanges } from "../../types/purchaseTypes.ts";
 import { createMessage } from "../../services/inboxService.ts";
-import { toMongoDate2 } from "../../helpers/inventoryHelpers.ts";
+import { toMongoDate2, version_compare } from "../../helpers/inventoryHelpers.ts";
 import { shouldDoServerQol } from "../../services/configService.ts";
 import gameToBuildVersion from "../../constants/gameToBuildVersion.ts";
 import gameToBuildVersionInt from "../../constants/gameToBuildVersionInt.ts";
+import { addQuestKey } from "../../services/questService.ts";
 
 interface ITrainingResultsRequest {
     numLevelsGained: number;
@@ -28,7 +29,7 @@ const handleTrainingProgress = async (
 ): Promise<ITrainingResultsResponse> => {
     const inventory = await getInventory(
         account._id,
-        "TrainingDate PlayerLevel TradesRemaining noMasteryRankUpCooldown"
+        "TrainingDate PlayerLevel TradesRemaining QuestKeys noMasteryRankUpCooldown"
     );
 
     if (numLevelsGained === 1) {
@@ -44,6 +45,24 @@ const handleTrainingProgress = async (
 
         inventory.PlayerLevel += 1;
         inventory.TradesRemaining += 1;
+
+        // Some quest keys are awarded via Mastery Rank in pre-Specters of the Rail builds, handle that here.
+        if (
+            version_compare(buildLabel, gameToBuildVersion["18.16.0"]) < 0 &&
+            version_compare(buildLabel, gameToBuildVersion["15.0.0"]) >= 0
+        ) {
+            if (inventory.PlayerLevel >= 2) {
+                if (!inventory.QuestKeys.some(q => q.ItemType.endsWith("ArchwingQuestKeyChain"))) {
+                    addQuestKey(inventory, { ItemType: "/Lotus/Types/Keys/ArchwingQuest/ArchwingQuestKeyChain" });
+                }
+            }
+
+            if (inventory.PlayerLevel >= 3 && version_compare(buildLabel, gameToBuildVersion["15.13.0"]) >= 0) {
+                if (!inventory.QuestKeys.some(q => q.ItemType.endsWith("SpyQuestKeyChain"))) {
+                    addQuestKey(inventory, { ItemType: "/Lotus/Types/Keys/SpyQuestKeyChain/SpyQuestKeyChain" });
+                }
+            }
+        }
 
         if (inventory.PlayerLevel == 2) {
             await createMessage(account._id, [

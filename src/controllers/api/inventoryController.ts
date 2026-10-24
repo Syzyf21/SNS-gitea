@@ -230,7 +230,7 @@ export const inventoryController: RequestHandler = async (request, response) => 
             await ensureUserHasFounderHonoria(inventory);
         }
         await ensureUserHasSteelPathRewards(inventory);
-        cleanupInventory(inventory);
+        cleanupInventory(inventory, buildLabel);
 
         inventory.NextRefill = new Date((today + 1) * 86400000); // tomorrow at 0 UTC
         //await inventory.save();

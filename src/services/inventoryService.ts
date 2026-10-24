@@ -3122,9 +3122,30 @@ export const setupKahlSyndicate = (inventory: TInventoryDatabaseDocument): void 
     }
 };
 
-export const cleanupInventory = (inventory: TInventoryDatabaseDocument): void => {
+export const cleanupInventory = (inventory: TInventoryDatabaseDocument, buildLabel: string): void => {
     if (ensureOperatorSuitsRemasterData(inventory)) {
         logger.debug(`added missing Operator suits for Operator remaster`);
+    }
+
+    // Retroactive fix for accounts that missed the unlock triggers for The Archwing and Stolen Dreams in pre-Specters of the Rail builds.
+    if (
+        version_compare(buildLabel, gameToBuildVersion["18.16.0"]) < 0 &&
+        version_compare(buildLabel, gameToBuildVersion["15.0.0"]) >= 0
+    ) {
+        const masteryRank = getMasteryRank(inventory);
+        if (masteryRank >= 2) {
+            if (!inventory.QuestKeys.some(q => q.ItemType.endsWith("ArchwingQuestKeyChain"))) {
+                addQuestKey(inventory, { ItemType: "/Lotus/Types/Keys/ArchwingQuest/ArchwingQuestKeyChain" });
+                logger.debug(`adding missing ArchwingQuestKeyChain`);
+            }
+        }
+
+        if (masteryRank >= 3 && version_compare(buildLabel, gameToBuildVersion["15.13.0"]) >= 0) {
+            if (!inventory.QuestKeys.some(q => q.ItemType.endsWith("SpyQuestKeyChain"))) {
+                addQuestKey(inventory, { ItemType: "/Lotus/Types/Keys/SpyQuestKeyChain/SpyQuestKeyChain" });
+                logger.debug(`adding missing SpyQuestKeyChain`);
+            }
+        }
     }
 
     let index = inventory.MiscItems.findIndex(x => x.ItemType == "");
