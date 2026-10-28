@@ -83,6 +83,7 @@ import {
 } from "./itemDataService.ts";
 import type { TInventoryDatabaseDocument } from "../models/inventoryModels/inventoryModel.ts";
 import { getEntriesUnsafe } from "../utils/ts-utils.ts";
+import { catBreadHash } from "../helpers/stringHelpers.ts";
 import { handleStoreItemAcquisition } from "./purchaseService.ts";
 import type { IMissionCredits, IMissionReward, INemesisTaxInfo, IRecoveredItemInfo } from "../types/missionTypes.ts";
 import { crackRelic, ensureRelicRewardIsCorrect } from "../helpers/relicHelper.ts";
@@ -1255,6 +1256,12 @@ const droptableAliases: Record<string, string> = {
         "/Lotus/Types/DropTables/WF1999DropTables/LasrianTankHardModeDropTable"
 };
 
+const eidolonCaptureDropTables = new Set([
+    "/Lotus/Types/DropTables/EidolonDropTables/TeralystCapturedDropTable",
+    "/Lotus/Types/DropTables/EidolonDropTables/TeralystBigCapturedDropTable",
+    "/Lotus/Types/DropTables/EidolonDropTables/TeralystRainCapturedDropTable"
+]);
+
 const isEligibleForCreditReward = async (
     rewardInfo: IRewardInfo,
     missions: IMission,
@@ -1303,6 +1310,7 @@ export const addMissionRewards = async (
         ChallengeInstanceStates: challengeInstanceStates,
         FusionBundles: fusionBundles,
         MiscItems: miscItems,
+        sharedSessionId,
         RawUpgrades: rawUpgrades,
         FusionTreasures: fusionTreasures
     }: IMissionInventoryUpdateRequest,
@@ -2066,7 +2074,14 @@ export const addMissionRewards = async (
                     const modDroptable = droptables.find(x => x.type == "mod");
                     if (modDroptable) {
                         for (let i = 0; i != si.DROP_MOD.length; ++i) {
-                            const reward = getRandomReward(modDroptable.items)!;
+                            let reward: (typeof modDroptable.items)[number] | undefined;
+                            if (eidolonCaptureDropTables.has(si.DropTable) && sharedSessionId) {
+                                const seed = catBreadHash(`${sharedSessionId}:${si.DropTable}:${i}`);
+                                reward = new SRng(seed).randomReward(modDroptable.items);
+                            } else {
+                                reward = getRandomReward(modDroptable.items);
+                            }
+                            if (!reward) continue;
                             logger.debug(`stripped droptable (mods pool) rolled`, reward);
                             await addItem(inventory, reward.type);
                             MissionRewards.push({
