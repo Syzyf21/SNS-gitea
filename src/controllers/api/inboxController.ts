@@ -154,6 +154,15 @@ export const inboxController: RequestHandler = async (req, res) => {
     }
 };
 
+const claimEventMessage = (account: TAccountDocument, key: string): boolean => {
+    account.receivedEventMessages ??= [];
+    if (account.receivedEventMessages.includes(key)) {
+        return false;
+    }
+    account.receivedEventMessages.push(key);
+    return true;
+};
+
 const createNewEventMessages = async (account: TAccountDocument): Promise<void> => {
     const newEventMessages: IMessageCreationTemplate[] = [];
 
@@ -219,8 +228,7 @@ const createNewEventMessages = async (account: TAccountDocument): Promise<void> 
         });
     }
 
-    if (config.worldState?.creditBoostMultiplier && !account.receivedEventMessage_creditBoost) {
-        account.receivedEventMessage_creditBoost = true;
+    if (config.worldState?.creditBoostMultiplier && claimEventMessage(account, "creditBoost")) {
         newEventMessages.push({
             globaUpgradeId: new Types.ObjectId("5b23106f283a555109666672"),
             sndr: "/Lotus/Language/Menu/Mailbox_WarframeSender",
@@ -231,8 +239,7 @@ const createNewEventMessages = async (account: TAccountDocument): Promise<void> 
             CrossPlatform: true
         });
     }
-    if (config.worldState?.affinityBoostMultiplier && !account.receivedEventMessage_affinityBoost) {
-        account.receivedEventMessage_affinityBoost = true;
+    if (config.worldState?.affinityBoostMultiplier && claimEventMessage(account, "affinityBoost")) {
         newEventMessages.push({
             globaUpgradeId: new Types.ObjectId("5b23106f283a555109666673"),
             sndr: "/Lotus/Language/Menu/Mailbox_WarframeSender",
@@ -243,8 +250,7 @@ const createNewEventMessages = async (account: TAccountDocument): Promise<void> 
             CrossPlatform: true
         });
     }
-    if (config.worldState?.resourceBoostMultiplier && !account.receivedEventMessage_resourceBoost) {
-        account.receivedEventMessage_resourceBoost = true;
+    if (config.worldState?.resourceBoostMultiplier && claimEventMessage(account, "resourceBoost")) {
         newEventMessages.push({
             globaUpgradeId: new Types.ObjectId("5b23106f283a555109666674"),
             sndr: "/Lotus/Language/Menu/Mailbox_WarframeSender",
@@ -255,8 +261,7 @@ const createNewEventMessages = async (account: TAccountDocument): Promise<void> 
             CrossPlatform: true
         });
     }
-    if (config.worldState?.galleonOfGhouls && !account.receivedEventMessage_galleonOfGhouls) {
-        account.receivedEventMessage_galleonOfGhouls = true;
+    if (config.worldState?.galleonOfGhouls && claimEventMessage(account, "galleonOfGhouls")) {
         newEventMessages.push({
             sndr: "/Lotus/Language/Bosses/BossCouncilorVayHek",
             sub: "/Lotus/Language/Events/GalleonRobberyIntroMsgTitle",
@@ -269,8 +274,7 @@ const createNewEventMessages = async (account: TAccountDocument): Promise<void> 
             minBuildVersion: gameToBuildVersionInt["38.5.11"]
         });
     }
-    if (config.worldState?.bloodOfPerita && !account.receivedEventMessage_bloodOfPerita) {
-        account.receivedEventMessage_bloodOfPerita = true;
+    if (config.worldState?.bloodOfPerita && claimEventMessage(account, "bloodOfPerita")) {
         newEventMessages.push({
             sndr: "/Lotus/Language/1999/MessengerRoatheName",
             sub: "/Lotus/Language/TauPrequel/TauPrequelFinal/RoathesValorIntroInboxTitle",
@@ -282,8 +286,7 @@ const createNewEventMessages = async (account: TAccountDocument): Promise<void> 
             minBuildVersion: gameToBuildVersionInt["41.0.0"]
         });
     }
-    if (config.worldState?.longShadow && !account.receivedEventMessage_longShadow) {
-        account.receivedEventMessage_longShadow = true;
+    if (config.worldState?.longShadow && claimEventMessage(account, "longShadow")) {
         newEventMessages.push({
             sndr: "/Lotus/Language/Menu/Mailbox_WarframeSender",
             sub: "/Lotus/Language/G1Quests/ProjectNightwatchTacAlertCommunityMsgTitle",
@@ -293,8 +296,7 @@ const createNewEventMessages = async (account: TAccountDocument): Promise<void> 
             goalTag: "NightwatchTacAlert"
         });
     }
-    if (config.worldState?.operationAtramentum && !account.receivedEventMessage_operationAtramentum) {
-        account.receivedEventMessage_operationAtramentum = true;
+    if (config.worldState?.operationAtramentum && claimEventMessage(account, "operationAtramentum")) {
         newEventMessages.push({
             sndr: "/Lotus/Language/Shadowgrapher/ZorbaName",
             sub: "/Lotus/Language/Shadowgrapher/ShadowgrapherEventInboxSubject",
@@ -307,8 +309,7 @@ const createNewEventMessages = async (account: TAccountDocument): Promise<void> 
             minBuildVersion: gameToBuildVersionInt["42.0.0"]
         });
     }
-    if (config.worldState?.breedingGrounds && !account.receivedEventMessage_breedingGrounds) {
-        account.receivedEventMessage_breedingGrounds = true;
+    if (config.worldState?.breedingGrounds && claimEventMessage(account, "breedingGrounds")) {
         newEventMessages.push({
             sndr: "/Lotus/Language/Menu/Mailbox_WarframeSender",
             sub: "/Lotus/Language/G1Quests/HiveEventLotusInboxTitle",
@@ -319,8 +320,7 @@ const createNewEventMessages = async (account: TAccountDocument): Promise<void> 
             minBuildVersion: gameToBuildVersionInt["14.0.0"]
         });
     }
-    if (config.worldState?.epochOperationTaubound && !account.receivedEventMessage_epochOperationTaubound) {
-        account.receivedEventMessage_epochOperationTaubound = true;
+    if (config.worldState?.epochOperationTaubound && claimEventMessage(account, "epochOperationTaubound")) {
         newEventMessages.push({
             sndr: "/Lotus/Language/Menu/Mailbox_WarframeSender",
             sub: "/Lotus/Language/TauPrologue/ErisMortemEventInboxSubject",

@@ -6,7 +6,11 @@ import path from "path";
 import child_process from "child_process";
 import { JSONStringify } from "json-with-bigint";
 import { startWebServer, type IListenError } from "./services/webService.ts";
-import { syncConfigWithDatabase, validateConfig } from "./services/configWatcherService.ts";
+import {
+    migrateLegacyEventMessageFlags,
+    syncConfigWithDatabase,
+    validateConfig
+} from "./services/configWatcherService.ts";
 import { updateWorldStateCollections } from "./services/worldStateService.ts";
 import { repoDir } from "./helpers/pathHelper.ts";
 import { MongoMemoryServer } from "mongodb-memory-server-core";
@@ -90,6 +94,7 @@ if (args.test) {
     } else {
         logger.info("Connected to MongoDB (version unknown)");
     }
+    await migrateLegacyEventMessageFlags();
     syncConfigWithDatabase();
 
     try {

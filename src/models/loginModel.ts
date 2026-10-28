@@ -31,14 +31,7 @@ const databaseAccountSchema = new Schema<IDatabaseAccountJson>(
         LastLoginRewardDate: { type: Number, default: 0 },
         LoginDays: { type: Number, default: 1 },
         DailyFirstWinDate: { type: Number, default: 0 },
-        receivedEventMessage_creditBoost: Boolean,
-        receivedEventMessage_affinityBoost: Boolean,
-        receivedEventMessage_resourceBoost: Boolean,
-        receivedEventMessage_galleonOfGhouls: Boolean,
-        receivedEventMessage_bloodOfPerita: Boolean,
-        receivedEventMessage_longShadow: Boolean,
-        receivedEventMessage_operationAtramentum: Boolean,
-        receivedEventMessage_breedingGrounds: Boolean
+        receivedEventMessages: { type: [String], default: undefined }
     },
     opts
 );

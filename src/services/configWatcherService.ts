@@ -254,39 +254,62 @@ export const validateConfig = (): void => {
     }
 };
 
+export const migrateLegacyEventMessageFlags = async (): Promise<void> => {
+    await Promise.all(
+        [
+            "creditBoost",
+            "affinityBoost",
+            "resourceBoost",
+            "galleonOfGhouls",
+            "bloodOfPerita",
+            "longShadow",
+            "operationAtramentum",
+            "breedingGrounds"
+        ].map(key =>
+            Account.collection.updateMany(
+                { [`receivedEventMessage_${key}`]: { $exists: true } },
+                {
+                    $addToSet: { receivedEventMessages: key },
+                    $unset: { [`receivedEventMessage_${key}`]: "" }
+                }
+            )
+        )
+    );
+};
+
 export const syncConfigWithDatabase = (): void => {
     // Event messages are deleted after endDate. Since we don't use beginDate/endDate and instead have config toggles, we need to delete the messages once those bools are false.
     // Also, for some reason, I can't just do `Inbox.deleteMany(...)`; - it needs this whole circus.
     if (!config.worldState?.creditBoostMultiplier) {
-        void Account.updateMany({}, { $unset: { receivedEventMessage_creditBoost: 1 } }).then(() => {});
+        void Account.updateMany({}, { $pull: { receivedEventMessages: "creditBoost" } }).then(() => {});
         void Inbox.deleteMany({ globaUpgradeId: "5b23106f283a555109666672" }).then(() => {});
     }
     if (!config.worldState?.affinityBoostMultiplier) {
-        void Account.updateMany({}, { $unset: { receivedEventMessage_affinityBoost: 1 } }).then(() => {});
+        void Account.updateMany({}, { $pull: { receivedEventMessages: "affinityBoost" } }).then(() => {});
         void Inbox.deleteMany({ globaUpgradeId: "5b23106f283a555109666673" }).then(() => {});
     }
     if (!config.worldState?.resourceBoostMultiplier) {
-        void Account.updateMany({}, { $unset: { receivedEventMessage_resourceBoost: 1 } }).then(() => {});
+        void Account.updateMany({}, { $pull: { receivedEventMessages: "resourceBoost" } }).then(() => {});
         void Inbox.deleteMany({ globaUpgradeId: "5b23106f283a555109666674" }).then(() => {});
     }
     if (!config.worldState?.galleonOfGhouls) {
-        void Account.updateMany({}, { $unset: { receivedEventMessage_galleonOfGhouls: 1 } }).then(() => {});
+        void Account.updateMany({}, { $pull: { receivedEventMessages: "galleonOfGhouls" } }).then(() => {});
         void Inbox.deleteMany({ goalTag: "GalleonRobbery" }).then(() => {});
     }
     if (!config.worldState?.longShadow) {
-        void Account.updateMany({}, { $unset: { receivedEventMessage_longShadow: 1 } }).then(() => {});
+        void Account.updateMany({}, { $pull: { receivedEventMessages: "longShadow" } }).then(() => {});
         void Inbox.deleteMany({ goalTag: "NightwatchTacAlert" }).then(() => {});
     }
     if (!config.worldState?.breedingGrounds) {
-        void Account.updateMany({}, { $unset: { receivedEventMessage_breedingGrounds: 1 } }).then(() => {});
+        void Account.updateMany({}, { $pull: { receivedEventMessages: "breedingGrounds" } }).then(() => {});
         void Inbox.deleteMany({ sub: "/Lotus/Language/G1Quests/HiveEventLotusInboxTitle" }).then(() => {});
     }
     if (!config.worldState?.epochOperationTaubound) {
-        void Account.updateMany({}, { $unset: { receivedEventMessage_epochOperationTaubound: 1 } }).then(() => {});
+        void Account.updateMany({}, { $pull: { receivedEventMessages: "epochOperationTaubound" } }).then(() => {});
         void Inbox.deleteMany({ sub: "/Lotus/Language/TauPrologue/ErisMortemEventInboxSubject" }).then(() => {});
     }
     if (!config.worldState?.bloodOfPerita) {
-        void Account.find({ receivedEventMessage_bloodOfPerita: { $exists: true } }, "_id").then(accounts => {
+        void Account.find({ receivedEventMessages: "bloodOfPerita" }, "_id").then(accounts => {
             for (const account of accounts) {
                 void createMessage(account._id, [
                     {
@@ -301,14 +324,14 @@ export const syncConfigWithDatabase = (): void => {
                     }
                 ]);
             }
-            void Account.updateMany({}, { $unset: { receivedEventMessage_bloodOfPerita: 1 } }).then(() => {});
+            void Account.updateMany({}, { $pull: { receivedEventMessages: "bloodOfPerita" } }).then(() => {});
         });
         void Inbox.deleteMany({
             transmission: "/Lotus/Sounds/Dialog/Tau/RoatheEventOutroInbox/DRoatheEventIntroInbox0010Roathe"
         }).then(() => {});
     }
     if (!config.worldState?.operationAtramentum) {
-        void Account.find({ receivedEventMessage_operationAtramentum: { $exists: true } }, "_id").then(accounts => {
+        void Account.find({ receivedEventMessages: "operationAtramentum" }, "_id").then(accounts => {
             for (const account of accounts) {
                 void createMessage(account._id, [
                     {
@@ -325,7 +348,7 @@ export const syncConfigWithDatabase = (): void => {
                     }
                 ]);
             }
-            void Account.updateMany({}, { $unset: { receivedEventMessage_operationAtramentum: 1 } }).then(() => {});
+            void Account.updateMany({}, { $pull: { receivedEventMessages: "operationAtramentum" } }).then(() => {});
         });
         void Inbox.deleteMany({
             transmission: "/Lotus/Sounds/Dialog/Shadowgrapher/Vendor/DSGInbox0011AspirantZorba"

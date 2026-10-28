@@ -37,15 +37,7 @@ interface IDatabaseAccount extends IAccountCreationData {
     LastLoginRewardDate: number;
     LoginDays: number;
     DailyFirstWinDate: number;
-    receivedEventMessage_creditBoost?: boolean;
-    receivedEventMessage_affinityBoost?: boolean;
-    receivedEventMessage_resourceBoost?: boolean;
-    receivedEventMessage_galleonOfGhouls?: boolean;
-    receivedEventMessage_bloodOfPerita?: boolean;
-    receivedEventMessage_longShadow?: boolean;
-    receivedEventMessage_operationAtramentum?: boolean;
-    receivedEventMessage_breedingGrounds?: boolean;
-    receivedEventMessage_epochOperationTaubound?: boolean;
+    receivedEventMessages?: string[];
 }
 
 // Includes virtual ID
