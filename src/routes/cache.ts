@@ -9,7 +9,7 @@ cacheRouter.get(/^\/origin\/[a-zA-Z0-9]+\/[0-9]+\/H\.Cache\.bin.*$/, (_req, res)
 
 const strippedAssetsDir = fs.existsSync("static/data/0") ? "static/data/0" : "static/data/stripped-assets";
 
-cacheRouter.get(/^\/0(?:_[a-z]{2})?\/.+!.+$/, async (req, res) => {
+cacheRouter.get(/^\/[0-9A-F](?:_[a-z]{2})?\/.+!.+$/, async (req, res) => {
     try {
         const dir = req.path.substring(0, req.path.lastIndexOf("/"));
         const file = req.path.substring(dir.length + 1);
