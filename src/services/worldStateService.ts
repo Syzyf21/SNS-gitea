@@ -6210,7 +6210,7 @@ const generateSeededAlert = async (alertIndex: number, buildVersion: number): Pr
     const minEnemyLevel = 10 + Math.round(difficulty * 20);
     const maxEnemyLevel = minEnemyLevel + rng.randomInt(5, 10);
 
-    let rewardCredits = 2000 + Math.round(difficulty * 18000);
+    let rewardCredits = 2000 + Math.round(difficulty * 180) * 100;
     let rewardItems: string[] | undefined = undefined;
     let rewardCountedItems: { ItemType: string; ItemCount: number }[] | undefined = undefined;
     let isNightmare = false;
@@ -6277,7 +6277,7 @@ const generateSeededAlert = async (alertIndex: number, buildVersion: number): Pr
 
     switch (selectedCategory) {
         case "CREDITS": {
-            rewardCredits = 5000 + Math.round(difficulty * 15000);
+            rewardCredits = 5000 + Math.round(difficulty * 150) * 100;
             break;
         }
         case "STANDARD_RESOURCES": {
