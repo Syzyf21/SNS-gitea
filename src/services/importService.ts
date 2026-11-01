@@ -42,7 +42,9 @@ import type {
     IFusionTreasure,
     ITennoCon2026Cust,
     ICrewMemberClient,
-    ICrewMemberDatabase
+    ICrewMemberDatabase,
+    IGoalProgressClient,
+    IGoalProgressDatabase
 } from "../types/inventoryTypes/inventoryTypes.ts";
 import { equipmentKeys, slotNames, type IStepSequencerDatabase } from "../types/inventoryTypes/inventoryTypes.ts";
 import type { TInventoryDatabaseDocument } from "../models/inventoryModels/inventoryModel.ts";
@@ -338,6 +340,14 @@ const convertCrewMember = (client: ICrewMemberClient): ICrewMemberDatabase => {
         _id: new Types.ObjectId(fromOid(ItemId)),
         WeaponId: client.WeaponId ? new Types.ObjectId(fromOid(client.WeaponId)) : undefined,
         Configs: client.Configs?.map(convertItemConfig)
+    };
+};
+
+const convertGoalProgress = (client: IGoalProgressClient): IGoalProgressDatabase => {
+    const { _id, ...rest } = client;
+    return {
+        ...rest,
+        goalId: new Types.ObjectId(fromOid(_id))
     };
 };
 
@@ -665,6 +675,9 @@ export const importInventory = (db: TInventoryDatabaseDocument, client: Partial<
     }
     if (client.CrewMembers !== undefined) {
         replaceArray<ICrewMemberDatabase>(db.CrewMembers, client.CrewMembers.map(convertCrewMember));
+    }
+    if (client.PersonalGoalProgress !== undefined) {
+        db.PersonalGoalProgress = client.PersonalGoalProgress.map(convertGoalProgress);
     }
 
     // Final sanity check over data
