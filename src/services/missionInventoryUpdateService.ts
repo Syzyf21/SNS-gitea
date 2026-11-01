@@ -644,12 +644,15 @@ export const addMissionInventoryUpdates = async (
                     }
                     // Handle Fusion Core drops
                     const parsedFingerprint = JSON.parse(clientUpgrade.UpgradeFingerprint || "{}") as { lvl?: number };
-                    if (parsedFingerprint.lvl) {
+                    if (id != "") {
+                        const upgrade = inventory.Upgrades.id(id)!;
+                        upgrade.UpgradeFingerprint = clientUpgrade.UpgradeFingerprint; // primitive way to copy over the riven challenge progress
+                    } else if (parsedFingerprint.lvl) {
                         inventory.Upgrades.push({
                             ItemType: clientUpgrade.ItemType,
                             UpgradeFingerprint: clientUpgrade.UpgradeFingerprint
                         });
-                    } else if (id == "") {
+                    } else {
                         if (version_compare(buildLabel, gameToBuildVersion["7.3.0"]) >= 0) {
                             // U19 does not provide RawUpgrades and instead interleaves them with riven progress here
                             addMods(inventory, [
@@ -665,9 +668,6 @@ export const addMissionInventoryUpdates = async (
                                 UpgradeFingerprint: clientUpgrade.UpgradeFingerprint
                             });
                         }
-                    } else {
-                        const upgrade = inventory.Upgrades.id(id)!;
-                        upgrade.UpgradeFingerprint = clientUpgrade.UpgradeFingerprint; // primitive way to copy over the riven challenge progress
                     }
                 });
                 break;
