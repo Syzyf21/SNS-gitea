@@ -41,7 +41,7 @@ const varzia: IVarzia = {
         { ItemType: "/Lotus/StoreItems/Types/Game/QuartersWallpapers/TwitchPrimeWallpaper", RegularPrice: 5 },
         { ItemType: "/Lotus/StoreItems/Upgrades/Skins/Scarves/FlameScarfRefresh", RegularPrice: 10 },
         { ItemType: "/Lotus/StoreItems/Upgrades/Skins/MeleeDangles/FireMeleeDangleRefresh", RegularPrice: 6 },
-        { ItemType: "/Lotus/StoreItems/Types/StoreItems/Packages/PrimeColorPackA", PrimePrice: 1 },
+        { ItemType: "/Lotus/Types/StoreItems/Packages/PrimeColorPackA", PrimePrice: 1 },
         {
             ItemType: "/Lotus/StoreItems/Types/StoreItems/SuitCustomizations/ColourPickerPrimeDayItemA",
             RegularPrice: 5
@@ -85,7 +85,14 @@ const varzia: IVarzia = {
         { ItemType: "/Lotus/StoreItems/Types/Items/SongItems/ProteaPrimeSongItem", RegularPrice: 5 },
         { ItemType: "/Lotus/StoreItems/Types/Items/SongItems/WispPrimeSongItem", RegularPrice: 5 },
         { ItemType: "/Lotus/StoreItems/Types/Items/MiscItems/PrimeBucks", RegularPrice: 1 },
-        { ItemType: "/Lotus/Types/StoreItems/Packages/MegaPrimeVault/MPVVoidTraceBundle", RegularPrice: 1 }
+        { ItemType: "/Lotus/Types/StoreItems/Packages/MegaPrimeVault/MPVVoidTraceBundle", RegularPrice: 1 },
+        { ItemType: "/Lotus/StoreItems/Upgrades/Skins/Effects/OpulaEphemera", RegularPrice: 10 },
+        { ItemType: "/Lotus/StoreItems/Upgrades/Skins/Koumei/KoumeiWarfanSkin", RegularPrice: 10 },
+        { ItemType: "/Lotus/StoreItems/Types/StoreItems/AvatarImages/AvatarImageSwitch2Glyph", RegularPrice: 5 },
+        { ItemType: "/Lotus/StoreItems/Upgrades/Skins/Sigils/Switch2Sigil", RegularPrice: 5 },
+        { ItemType: "/Lotus/StoreItems/Upgrades/Skins/Scarves/TC2025OrokinScarf", PrimePrice: 1 },
+        { ItemType: "/Lotus/StoreItems/Types/Items/SongItems/YareliPrimeSongItem", RegularPrice: 5 },
+        { ItemType: "/Lotus/Types/StoreItems/Packages/OpulaArmourBundle", RegularPrice: 10 }
     ],
     primeSinglePacks: {
         "/Lotus/Types/StoreItems/Packages/MegaPrimeVault/MPVRevenantPrimeSinglePack": {
@@ -154,7 +161,7 @@ const varzia: IVarzia = {
         },
         "/Lotus/Types/StoreItems/Packages/MegaPrimeVault/MPVMiragePrimeSinglePack": {
             Items: [
-                { ItemType: "/Lotus/StoreItems/Powersuits/Banshee/MiragePrime", PrimePrice: 3 },
+                { ItemType: "/Lotus/StoreItems/Powersuits/Harlequin/MiragePrime", PrimePrice: 3 },
                 { ItemType: "/Lotus/StoreItems/Upgrades/Skins/Scarves/PrimeScarfG", PrimePrice: 2 },
                 { ItemType: "/Lotus/Types/StoreItems/Packages/MegaPrimeVault/MPVAtavistPrimeArmorSet", PrimePrice: 1 },
                 { ItemType: "/Lotus/StoreItems/Weapons/Tenno/Melee/PrimeKogake/KogakePrimeKnuckles", PrimePrice: 2 },
@@ -451,6 +458,17 @@ const varzia: IVarzia = {
             ],
             BobbleHeads: ["/Lotus/StoreItems/Types/Items/ShipDecos/IvaraPrimeBobbleHead"]
         },
+        "/Lotus/Types/StoreItems/Packages/MegaPrimeVault/MPVProteaPrimeSinglePack": {
+            Items: [
+                { ItemType: "/Lotus/StoreItems/Powersuits/Odalisk/ProteaPrime", PrimePrice: 3 },
+                { ItemType: "/Lotus/StoreItems/Upgrades/Skins/Scarves/PrimeRhoptronSyandana", PrimePrice: 2 },
+                { ItemType: "/Lotus/StoreItems/Upgrades/Skins/Effects/ProteaPrimeEphemera", PrimePrice: 2 },
+                { ItemType: "/Lotus/StoreItems/Upgrades/Skins/Odalisk/ProteaPrimeAltHelmet", PrimePrice: 1 },
+                { ItemType: "/Lotus/StoreItems/Weapons/Tenno/Pistols/PrimeVelox/PrimeVeloxPistol", PrimePrice: 2 },
+                { ItemType: "/Lotus/StoreItems/Weapons/Tenno/Melee/Swords/PrimeOkina/PrimeOkina", PrimePrice: 2 }
+            ],
+            BobbleHeads: ["/Lotus/StoreItems/Types/Items/ShipDecos/ProteaPrimeBobbleHead"]
+        },
         "/Lotus/Types/StoreItems/Packages/MegaPrimeVault/MPVGarudaPrimeSinglePack": {
             Items: [
                 { ItemType: "/Lotus/StoreItems/Powersuits/Garuda/GarudaPrime", PrimePrice: 3 },
@@ -594,6 +612,7 @@ const varzia: IVarzia = {
         "/Lotus/Types/StoreItems/Packages/MegaPrimeVault/MPVGaussPrimeSinglePack": {
             Items: [
                 { ItemType: "/Lotus/StoreItems/Powersuits/Runner/GaussPrime", PrimePrice: 3 },
+                { ItemType: "/Lotus/StoreItems/Upgrades/Skins/Runner/GaussPrimeAltHelmet", PrimePrice: 1 },
                 {
                     ItemType: "/Lotus/StoreItems/Weapons/Tenno/LongGuns/PrimeAcceltra/PrimeAcceltraWeapon",
                     PrimePrice: 2
@@ -603,7 +622,8 @@ const varzia: IVarzia = {
                     ItemType: "/Lotus/Types/StoreItems/Packages/MegaPrimeVault/MPVDopplinePrimeArmorSet",
                     PrimePrice: 2
                 },
-                { ItemType: "/Lotus/StoreItems/Upgrades/Skins/Scarves/PrimeAltraScarf", PrimePrice: 2 }
+                { ItemType: "/Lotus/StoreItems/Upgrades/Skins/Scarves/PrimeAltraScarf", PrimePrice: 2 },
+                { ItemType: "/Lotus/StoreItems/Types/Items/ShipDecos/Plushies/GaussPrimePlush", PrimePrice: 1 }
             ],
             BobbleHeads: ["/Lotus/StoreItems/Types/Items/ShipDecos/GaussPrimeBobbleHead"]
         },
@@ -955,10 +975,10 @@ const varzia: IVarzia = {
                 "/Lotus/Types/StoreItems/Packages/MegaPrimeVault/MPVMagPrimeSinglePack"
             ],
             Relics: [
-                "/Lotus/StoreItems/Types/Game/Projections/T1VoidProjectionYVaultABronze",
-                "/Lotus/StoreItems/Types/Game/Projections/T2VoidProjectionYVaultABronze",
-                "/Lotus/StoreItems/Types/Game/Projections/T3VoidProjectionYVaultABronze",
-                "/Lotus/StoreItems/Types/Game/Projections/T4VoidProjectionYVaultABronze"
+                "/Lotus/StoreItems/Types/Game/Projections/T1VoidProjectionYBronze",
+                "/Lotus/StoreItems/Types/Game/Projections/T2VoidProjectionYBronze",
+                "/Lotus/StoreItems/Types/Game/Projections/T3VoidProjectionYBronze",
+                "/Lotus/StoreItems/Types/Game/Projections/T4VoidProjectionYBronze"
             ],
             minBuildVersionInt: gameToBuildVersionInt["33.5.0"]
         },
@@ -968,10 +988,10 @@ const varzia: IVarzia = {
                 "/Lotus/Types/StoreItems/Packages/MegaPrimeVault/MPVFrostPrimeSinglePack"
             ],
             Relics: [
-                "/Lotus/StoreItems/Types/Game/Projections/T1VoidProjectionQVaultABronze",
-                "/Lotus/StoreItems/Types/Game/Projections/T2VoidProjectionQVaultABronze",
-                "/Lotus/StoreItems/Types/Game/Projections/T3VoidProjectionQVaultABronze",
-                "/Lotus/StoreItems/Types/Game/Projections/T4VoidProjectionQVaultABronze"
+                "/Lotus/StoreItems/Types/Game/Projections/T1VoidProjectionQBronze",
+                "/Lotus/StoreItems/Types/Game/Projections/T2VoidProjectionQBronze",
+                "/Lotus/StoreItems/Types/Game/Projections/T3VoidProjectionQBronze",
+                "/Lotus/StoreItems/Types/Game/Projections/T4VoidProjectionQBronze"
             ],
             minBuildVersionInt: gameToBuildVersionInt["31.0.0"] // Should be 30.9.4
         },
@@ -1032,8 +1052,28 @@ const varzia: IVarzia = {
                 "/Lotus/StoreItems/Types/Game/Projections/T4VoidProjectionGaussGrendelVaultABronze"
             ],
             minBuildVersionInt: gameToBuildVersionInt["42.0.0"]
+        },
+        "/Lotus/Types/StoreItems/Packages/MegaPrimeVault/MPVProteaIvaraPrimeDualPack": {
+            SinglePacks: [
+                "/Lotus/Types/StoreItems/Packages/MegaPrimeVault/MPVProteaPrimeSinglePack",
+                "/Lotus/Types/StoreItems/Packages/MegaPrimeVault/MPVIvaraPrimeSinglePack"
+            ],
+            Relics: [
+                "/Lotus/StoreItems/Types/Game/Projections/T1VoidProjectionProteaIvaraVaultABronze",
+                "/Lotus/StoreItems/Types/Game/Projections/T2VoidProjectionProteaIvaraVaultABronze",
+                "/Lotus/StoreItems/Types/Game/Projections/T2VoidProjectionProteaIvaraVaultBBronze",
+                "/Lotus/StoreItems/Types/Game/Projections/T3VoidProjectionProteaIvaraVaultABronze",
+                "/Lotus/StoreItems/Types/Game/Projections/T3VoidProjectionProteaIvaraVaultBBronze",
+                "/Lotus/StoreItems/Types/Game/Projections/T4VoidProjectionProteaIvaraVaultABronze"
+            ],
+            minBuildVersionInt: gameToBuildVersionInt["44.0.0"]
         }
     },
+    // One-off extras Varzia sold alongside a rotation; only offered when she is fully stocked.
+    limitedTimeOffers: [
+        { ItemType: "/Lotus/StoreItems/Types/Ship/AdvancedResourceDrone", PrimePrice: 1 }, // Feb 2025
+        { ItemType: "/Lotus/Types/StoreItems/Packages/MegaPrimeVault/MPVLarkspurGravimag", PrimePrice: 2 } // Nov 2025
+    ],
     vanguardVaultRelics: [
         { ItemType: "/Lotus/StoreItems/Types/Game/Projections/T4VanguardVaultABronze", RegularPrice: 1, Limit: 100 },
         { ItemType: "/Lotus/StoreItems/Types/Game/Projections/T4VanguardVaultBBronze", RegularPrice: 1, Limit: 100 },
@@ -1059,6 +1099,7 @@ interface IVarzia {
             minBuildVersionInt: number;
         }
     >;
+    limitedTimeOffers: IPrimeVaultTraderOffer[];
     vanguardVaultRelics: IPrimeVaultTraderOffer[];
 }
 

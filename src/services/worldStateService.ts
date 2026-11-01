@@ -1855,7 +1855,15 @@ const getAllVarziaManifests = (buildVersion: number): IPrimeVaultTraderOffer[] =
             relics.push(...dualPack.Relics.map(relic => ({ ItemType: relic, RegularPrice: 1 })));
         });
 
-    return [...dualPacks, ...vanguardRelics, ...singlePacks, ...items, ...bobbleHeads, ...relics];
+    return [
+        ...dualPacks,
+        ...vanguardRelics,
+        ...singlePacks,
+        ...items,
+        ...varzia.limitedTimeOffers,
+        ...bobbleHeads,
+        ...relics
+    ];
 };
 
 // Only kept so progress in legacy invasions still pays out
