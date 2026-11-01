@@ -18,7 +18,7 @@ import {
 import type { IInventoryChanges } from "../../types/purchaseTypes.ts";
 import type { IPendingRecipeDatabase } from "../../types/inventoryTypes/inventoryTypes.ts";
 import { eInventorySlot } from "../../types/inventoryTypes/inventoryTypes.ts";
-import { fromOid, toOid2, U5ToModernRecipes, version_compare } from "../../helpers/inventoryHelpers.ts";
+import { fromOid, toLegacyOid, toOid2, U5ToModernRecipes, version_compare } from "../../helpers/inventoryHelpers.ts";
 import type { TInventoryDatabaseDocument } from "../../models/inventoryModels/inventoryModel.ts";
 import type { IRecipe } from "warframe-public-export-plus";
 import type { IEquipmentClient } from "../../types/equipmentTypes.ts";
@@ -114,7 +114,61 @@ export const claimCompletedRecipeController: RequestHandler = async (req, res) =
         );
     }
     await inventory.save();
-    res.json(resp);
+
+    if (version_compare(buildLabel, gameToBuildVersion["21.0.0"]) >= 0) {
+        res.json(resp);
+        broadcastInventoryUpdate(req);
+        return;
+    }
+
+    // U14-U20 expect inventory changes at the root of the response instead of under InventoryChanges.
+    if (version_compare(buildLabel, gameToBuildVersion["14.0.0"]) >= 0) {
+        if (version_compare(buildLabel, gameToBuildVersion["19.5.3"]) <= 0) {
+            // ItemIds must be converted to legacy format for U19.5 and below or the client will be unhappy.
+            for (const category of [
+                "KubrowPets",
+                "Suits",
+                "LongGuns",
+                "Pistols",
+                "Melee",
+                "Sentinels",
+                "SentinelWeapons",
+                "SpaceSuits",
+                "SpaceGuns",
+                "SpaceMelee",
+                "KubrowPetPrints",
+                "WeaponSkins",
+                "Drones"
+            ] as const) {
+                resp.InventoryChanges[category]?.forEach(x => toLegacyOid(x.ItemId));
+            }
+        }
+
+        // Categories not listed in the response are not required, they are hard-coded by the client to be claimed without response data.
+        res.json({
+            PremiumCredits: inventory.infinitePlatinum ? 999999999 : inventory.PremiumCredits,
+            PremiumCreditsFree: inventory.infinitePlatinum ? 0 : inventory.PremiumCreditsFree,
+            KubrowPets: resp.InventoryChanges.KubrowPets,
+            Suits: resp.InventoryChanges.Suits,
+            LongGuns: resp.InventoryChanges.LongGuns,
+            Pistols: resp.InventoryChanges.Pistols,
+            Melee: resp.InventoryChanges.Melee,
+            Sentinels: resp.InventoryChanges.Sentinels,
+            SentinelWeapons: resp.InventoryChanges.SentinelWeapons,
+            SpaceSuits: resp.InventoryChanges.SpaceSuits,
+            SpaceGuns: resp.InventoryChanges.SpaceGuns,
+            SpaceMelee: resp.InventoryChanges.SpaceMelee,
+            KubrowPetPrints: resp.InventoryChanges.KubrowPetPrints,
+            WeaponSkins: resp.InventoryChanges.WeaponSkins,
+            Drones: resp.InventoryChanges.Drones,
+            BrandedSuits: resp.BrandedSuits
+        });
+        broadcastInventoryUpdate(req);
+        return;
+    }
+
+    // Builds before U14 hard-code claiming all items on the client and do not require a json response.
+    res.status(200).end();
     broadcastInventoryUpdate(req);
 };
 

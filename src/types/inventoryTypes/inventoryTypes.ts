@@ -921,7 +921,7 @@ export interface IKubrowPetPrintClient {
     Size: number; // seems to be 0.7 to 1.0
     DominantTraits: ITraits;
     RecessiveTraits: ITraits;
-    ItemId: IOid;
+    ItemId: IOidWithLegacySupport;
     InheritedModularParts?: string[];
 }
 
